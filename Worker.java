@@ -11,7 +11,8 @@ import java.net.Socket;
  *
  * @author Josh
  */
-public class Worker {
+public class Worker extends Thread
+{
     private Socket client;
     private MimeTypes mimes;
     private HttpdConf config;
