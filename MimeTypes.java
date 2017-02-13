@@ -6,20 +6,28 @@
 package csc667_webserver;
 
 import java.util.*;
+import java.util.Hashtable;
 /**
  *
- * @author Josh
+ * @author Josh and Jason
  */
-public class MimeTypes extends ConfigurationReader{
+public class MimeTypes extends ConfigurationReader
+{
     private Dictionary types;
     
-    public String MimeTypes(String fileNames){
-        return "";
+    public MimeTypes(String fileNames)
+    {
+    	
     }
-    public void load(){
+
+    public void load()
+    {
         
     }
-    public String lookup(String extension){
+
+    public String lookup(String extension)
+    {
+        
         return "";
     }
 }
