@@ -5,8 +5,8 @@
  */
 package csc667_webserver;
 
+import java.io.*;
 import java.util.Dictionary;
-import java.util.stream.Stream;
 
 /**
  *
@@ -24,14 +24,23 @@ public class Request
     {
     }
     
-    public Request(Stream client)
+    public Request(InputStream client)
     {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(client.getInputStream()));
+        String line = "";
+        
+        //This combines all lines until it reaches "END" and makes one request.
+        //Is that the correct implementation? - Jason
+        while (!line.contains("END"))
+        {
+            line += bufferedReader.readLine();
+        }
+        
+        
     }
     
     public void parse()
     {
         
     }
-    
-    //Accessors will go here.
 }
