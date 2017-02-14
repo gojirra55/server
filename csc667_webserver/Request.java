@@ -26,14 +26,14 @@ public class Request
     
     public Request(InputStream client)
     {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(client.getInputStream()));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(client));
         String line = "";
         
         //This combines all lines until it reaches "END" and makes one request.
         //Is that the correct implementation? - Jason
         while (!line.contains("END"))
         {
-            line += bufferedReader.readLine();
+            //line += bufferedReader.readLine();
         }
         
         
