@@ -36,7 +36,8 @@ public class Server
             {
                 client = socket.accept(); //What does this line do exacty?
                 request = requestLine(client);
-                response = ResponseFactory.getResponse(request, resource);
+                ResponseFactory responseFactory = new ResponseFactory();
+                response = responseFactory.getResponse(request, resource);
                 
             }
         }

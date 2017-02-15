@@ -14,10 +14,13 @@ import java.io.File;
 public class Logger {
     private File file;
     
-    public Logger(String fileName){
+    public Logger(String fileName)
+    {
         
     }
-    public write(Request request, Response response){
+    
+    public void write(Request request, Response response)
+    {
         
     }
 }

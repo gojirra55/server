@@ -11,7 +11,7 @@ import java.util.Hashtable;
  *
  * @author Josh and Jason
  */
-public class MimeTypes extends ConfigurationReader
+public class MimeTypes
 {
     private Dictionary types;
     

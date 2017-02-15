@@ -16,10 +16,13 @@ public class Response {
     public String reasonPhrase;
     public Resource resource;
     
-    public Response(Resource resource){
+    public Response(Resource resource)
+    {
         
     }
-    public Send(OutputStream out){
+    
+    public void Send(OutputStream out)
+    {
         
     }
 }
