@@ -11,6 +11,9 @@ package csc667_webserver;
  */
 public class ResponseFactory {
     public Response getResponse(Request request, Resource resource){
+        Response response = new Response(resource);
+        //What to use resource for? -Jason
         
+        return response;
     }
 }
