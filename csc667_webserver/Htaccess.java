@@ -16,7 +16,7 @@ public class Htaccess extends ConfigurationReader{
     private String require;
     
     public void load(){
-        
+        //add code here
     }
     public boolean isAuthorized(String username, String password){
         return true;
