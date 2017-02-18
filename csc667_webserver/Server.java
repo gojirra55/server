@@ -32,6 +32,7 @@ public class Server
         {
             socket = new ServerSocket(DEFAULT_PORT);
             Socket client = null;
+            //Move to worker when that is implemented?
             String timeStamp = Long.toString(System.currentTimeMillis());
             Logger logger = new Logger("Log:" + timeStamp);
             
