@@ -10,7 +10,8 @@ import java.util.*;
  *
  * @author Josh
  */
-public class HttpdConf extends ConfigurationReader {
+public class HttpdConf
+{
     private Dictionary aliases; //assumption:need library for this to work
     private Dictionary scriptAliases; //assumption:need library for this to work
     //more dictionary attributes to follow jrob just put "etc"....

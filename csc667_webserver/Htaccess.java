@@ -9,7 +9,8 @@ package csc667_webserver;
  *
  * @author Josh
  */
-public class Htaccess extends ConfigurationReader{
+public class Htaccess
+{
     private Htpassword userFile; //assumption: need library for this to be fixed
     private String authType;
     private String authName;

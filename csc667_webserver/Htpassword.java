@@ -10,7 +10,8 @@ import java.util.*;
  *
  * @author Josh
  */
-class Htpassword extends ConfigurationReader{
+class Htpassword
+{
     private Dictionary users;
     
     public void load(){

@@ -7,10 +7,10 @@ package csc667_webserver;
 
 /**
  *
- * @author Josh
+ * @author Josh and Jason
  */
 public class Resource {
-    public Resource(String url, HttpdConf config){
+    public Resource(String uri, HttpdConf config){
         
     }
     public String absolutePath(){
