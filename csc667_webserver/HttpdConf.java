@@ -16,8 +16,7 @@ public class HttpdConf
     private Dictionary scriptAliases; //assumption:need library for this to work
     //more dictionary attributes to follow jrob just put "etc"....
     
-    public String HttpdConf(String fileName){
-        return "";
+    public HttpdConf(String fileName){
     }
     
     public void load(){

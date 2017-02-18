@@ -14,33 +14,50 @@ import java.util.Dictionary;
  */
 public class Request
 {
-    private String url;
-    private Object body; //UML Diagram shows type "?"... ?
+    private String uri;
+    private String body; //UML Diagram shows type "?"... ? Maybe should be File?
     private String verb;
     private String httpVersion;
     private Dictionary headers;
+    private String[] line;
+    private ResponseFactory responseFactory = new ResponseFactory();
+    private Response response;
     
     public Request(String test)
     {
     }
     
-    public Request(InputStream client)
+    public Request(InputStream client) throws IOException
     {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(client));
-        String line = "";
         
         //This combines all lines until it reaches "END" and makes one request.
         //Is that the correct implementation? - Jason
-        while (!line.contains("END"))
+        line[0] = bufferedReader.readLine();
+        line[1] = bufferedReader.readLine();
+        line[2] = "";
+        
+        while (!line[2].contains("END"))
         {
-            //line += bufferedReader.readLine();
+            line[2] += bufferedReader.readLine();
         }
+        
+        parse();
         
         
     }
     
     public void parse()
     {
-        //Code here.
+        //Read line and create approrpiate Responses from ResponseFactory?
+        
+        //Not sure about these. - Jason
+        verb = line[0]; 
+        uri = line[1];
+        body = line[2];
+        
+        HttpdConf httpdConf = new HttpdConf(body);
+        Resource resource = new Resource(uri, httpdConf);
+        response = responseFactory.getResponse(this, resource);
     }
 }
