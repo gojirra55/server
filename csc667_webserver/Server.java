@@ -7,6 +7,8 @@ package csc667_webserver;
 
 import java.io.*;
 import java.net.*;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Dictionary;
 
 /**
@@ -30,6 +32,8 @@ public class Server
         {
             socket = new ServerSocket(DEFAULT_PORT);
             Socket client = null;
+            String timeStamp = Long.toString(System.currentTimeMillis());
+            Logger logger = new Logger("Log:" + timeStamp);
             
             
             while (true)

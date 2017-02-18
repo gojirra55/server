@@ -60,4 +60,20 @@ public class Request
         Resource resource = new Resource(uri, httpdConf);
         response = responseFactory.getResponse(this, resource);
     }
+    
+    //Accessors
+    public String getUri()
+    {
+        return uri;
+    }
+    
+    public String getVerb()
+    {
+        return verb;
+    }
+    
+    public String getHttpVersion()
+    {
+        return httpVersion;
+    }
 }

@@ -5,7 +5,7 @@
  */
 package csc667_webserver;
 
-import java.io.File;
+import java.io.*;
 
 /**
  *
@@ -13,14 +13,21 @@ import java.io.File;
  */
 public class Logger {
     private File file;
+    private FileWriter fileWriter;
     
-    public Logger(String fileName)
+    public Logger(String fileName) throws IOException
     {
+        file = new File(fileName);
+        file.createNewFile();
+        fileWriter = new FileWriter(file, true);
         
     }
     
-    public void write(Request request, Response response)
+    public void write(Request request, Response response) throws IOException
     {
-        
+        String line = "Request: " + request.getUri() + " " + request.getVerb() + " " + request.getHttpVersion() + "\n";
+        fileWriter.write(line);
+        line = Integer.toString(response.code);
+        fileWriter.write(line);
     }
 }
