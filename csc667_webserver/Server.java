@@ -52,13 +52,17 @@ public class Server
                 */
                
                 client = socket.accept();
-                try{
-                request = requestLine(client);
-                ResponseFactory responseFactory = new ResponseFactory();
-                response = responseFactory.getResponse(request, resource);
+                try
+                {
+                    Worker worker = new Worker(client, configuration, mimeTypes);
+                    request = requestLine(client);
+                    ResponseFactory responseFactory = new ResponseFactory();
+                    response = responseFactory.getResponse(request, resource);
                 
-                PrintWriter out = new PrintWriter(client.getOutputStream(),true); //not sure if this should be handled in Response class
-                }finally{
+                    PrintWriter out = new PrintWriter(client.getOutputStream(),true); //not sure if this should be handled in Response class
+                }
+                finally
+                {
                     client.close();
                 }
             }
