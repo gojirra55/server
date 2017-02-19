@@ -11,7 +11,7 @@ import java.util.*;
  *
  * @author Josh
  */
-public class HttpdConf
+public class HttpdConf extends ConfigurationReader
 {
     private Dictionary aliases; //assumption:need library for this to work
     private Dictionary scriptAliases; //assumption:need library for this to work
