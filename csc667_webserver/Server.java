@@ -30,11 +30,16 @@ public class Server
     {
         try
         {
-            socket = new ServerSocket(DEFAULT_PORT);
-            Socket client = null;
-            //Move to worker when that is implemented?
+            //Load config files.
+            configuration = new HttpdConf("./conf/httpd.conf");
+            configuration.load();
+            mimeTypes = new MimeTypes("./conf/mime.conf");
+            //Set up logger.
             String timeStamp = Long.toString(System.currentTimeMillis());
             Logger logger = new Logger("Log:" + timeStamp);
+            //Set up socket.
+            socket = new ServerSocket(DEFAULT_PORT);
+            Socket client = null;
             
             
             while (true)
@@ -45,7 +50,8 @@ public class Server
                 *    clientSocket = serverSocket.accept();
                 * The accept method waits until a client starts up and requests a connection on the host and port of this server. 
                 */
-                client = socket.accept(); //What does this line do exacty?
+               
+                client = socket.accept();
                 try{
                 request = requestLine(client);
                 ResponseFactory responseFactory = new ResponseFactory();
