@@ -24,22 +24,22 @@ public class Server
     private Request request;
     private Resource resource;
     private Response response;
-    public static final int DEFAULT_PORT = 8000;
+    public static final int DEFAULT_PORT = 8080;
     
     public void start() throws IOException
     {
         try
         {
-            //Load config files.
+            //Load config file.
             configuration = new HttpdConf("./conf/httpd.conf");
-            configuration.load();
+            int port = configuration.lookup("Listen"); //Need to add lookup function to HttpdConf.
+            //Load mime types.
             mimeTypes = new MimeTypes("./conf/mime.conf");
-            mimeTypes.load();
             //Set up logger.
             String timeStamp = Long.toString(System.currentTimeMillis());
-            Logger logger = new Logger("Log:" + timeStamp);
+            Logger logger = new Logger("Log:" + timeStamp); //Creates a file with a timestamp in the name for each request.
             //Set up socket.
-            socket = new ServerSocket(DEFAULT_PORT);
+            socket = new ServerSocket(port);
             Socket client = null;
             
             
@@ -53,7 +53,8 @@ public class Server
                 */
                
                 client = socket.accept();
-                Worker worker = new Worker(client, configuration, mimeTypes);
+                Thread worker = new Thread(new Worker(client, configuration, mimeTypes));
+                worker.start();
                 request = requestLine(client);
 
                 //Move to request class?
@@ -79,5 +80,18 @@ public class Server
         Request request = new Request(stream);
         
         return request;
+    }
+    
+    public void main(String args[])
+    {
+        try
+        {
+            Server server = new Server();
+            server.start();
+        }
+        catch(IOException e)
+        {
+            System.err.println("IOException caught: " + e.getMessage());
+        }
     }
 }
