@@ -58,5 +58,7 @@ public class HttpdConf extends ConfigurationReader
         
     }
     
-    public 
+    public int getPort(){
+        return portNum;
+    }
 }
