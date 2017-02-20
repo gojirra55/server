@@ -5,16 +5,22 @@
  */
 package csc667_webserver;
 
+import java.io.IOException;
+
 /**
  *
  * @author Josh
  */
-public class Htaccess
+public class Htaccess extends ConfigurationReader
 {
     private Htpassword userFile; //assumption: need library for this to be fixed
     private String authType;
     private String authName;
     private String require;
+    
+    public Htaccess(String fileName) throws IOException{
+        super(fileName);
+    }
     
     public void load(){
         //add code here
