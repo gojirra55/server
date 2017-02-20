@@ -32,7 +32,7 @@ public class Server
         {
             //Load config file.
             configuration = new HttpdConf("./conf/httpd.conf");
-            int port = configuration.lookup("Listen"); //Need to add lookup function to HttpdConf.
+            int port = configuration.getPort(); //Need to add lookup function to HttpdConf.
             //Load mime types.
             mimeTypes = new MimeTypes("./conf/mime.conf");
             //Set up logger.
