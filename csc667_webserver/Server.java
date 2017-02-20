@@ -34,6 +34,7 @@ public class Server
             configuration = new HttpdConf("./conf/httpd.conf");
             configuration.load();
             mimeTypes = new MimeTypes("./conf/mime.conf");
+            mimeTypes.load();
             //Set up logger.
             String timeStamp = Long.toString(System.currentTimeMillis());
             Logger logger = new Logger("Log:" + timeStamp);
@@ -52,19 +53,17 @@ public class Server
                 */
                
                 client = socket.accept();
-                try
-                {
-                    Worker worker = new Worker(client, configuration, mimeTypes);
-                    request = requestLine(client);
-                    ResponseFactory responseFactory = new ResponseFactory();
-                    response = responseFactory.getResponse(request, resource);
+                Worker worker = new Worker(client, configuration, mimeTypes);
+                request = requestLine(client);
+
+                //Move to request class?
+                ResponseFactory responseFactory = new ResponseFactory();
+                response = responseFactory.getResponse(request, resource);
+
+                PrintWriter out = new PrintWriter(client.getOutputStream(),true); //not sure if this should be handled in Response class
+
+                client.close();
                 
-                    PrintWriter out = new PrintWriter(client.getOutputStream(),true); //not sure if this should be handled in Response class
-                }
-                finally
-                {
-                    client.close();
-                }
             }
         }
         catch (IOException e)
@@ -79,7 +78,6 @@ public class Server
         InputStream stream = client.getInputStream();
         Request request = new Request(stream);
         
-        //More code parsing request?
         return request;
     }
 }
