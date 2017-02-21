@@ -9,7 +9,7 @@ import java.io.OutputStream;
 
 /**
  *
- * @author Josh
+ * @author Josh and Jason
  */
 public class Response {
     public int code;
