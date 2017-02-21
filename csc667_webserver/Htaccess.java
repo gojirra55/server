@@ -5,6 +5,8 @@
  */
 package csc667_webserver;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 
 /**
@@ -17,6 +19,7 @@ public class Htaccess extends ConfigurationReader
     private String authType;
     private String authName;
     private String require;
+    private BufferedReader bufferedReader;
     
     public Htaccess(String fileName) throws IOException{
         super(fileName);
@@ -24,10 +27,11 @@ public class Htaccess extends ConfigurationReader
         this.authName = new String();
         this.authType = new String();
         this.require = new String();
+        this.bufferedReader = new BufferedReader(new FileReader(getFile()));
     }
     
-    public void load(){
-        
+    public void load() throws IOException{
+       
     }
     public boolean isAuthorized(String username, String password){
         return true;
