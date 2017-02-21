@@ -15,10 +15,11 @@ public class HttpdConf extends ConfigurationReader
 {
     private Dictionary aliases; //assumption:need library for this to work
     private Dictionary scriptAliases; //assumption:need library for this to work
-    
+    private int portNum;
     
     public HttpdConf(String fileName) throws IOException
     {
+        super(fileName);
         try
         {
             FileReader fileReader = new FileReader(fileName);
@@ -31,7 +32,12 @@ public class HttpdConf extends ConfigurationReader
             while ((line = bufferedReader.readLine()) != null)
             {
                 splitLine = line.split("", 2);
-                aliases.put(splitLine[0], splitLine[1]);
+                if(splitLine[0] == "Listen"){
+                    portNum = Integer.parseInt(splitLine[1]);
+                }
+                else{
+                    aliases.put(splitLine[0], splitLine[1]);
+                }
             }
             
             bufferedReader.close();
@@ -50,5 +56,9 @@ public class HttpdConf extends ConfigurationReader
     public void load()
     {
         
+    }
+    
+    public int getPort(){
+        return portNum;
     }
 }

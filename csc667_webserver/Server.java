@@ -24,23 +24,23 @@ public class Server
     private Request request;
     private Resource resource;
     private Response response;
-    public static final int DEFAULT_PORT = 8000;
+    public static final int DEFAULT_PORT = 8080;
     
     public void start() throws IOException
     {
         try
         {
-            //Load config files.
+            //Load config file.
             configuration = new HttpdConf("./conf/httpd.conf");
-            configuration.load();
+            int port = configuration.getPort(); //Need to add lookup function to HttpdConf.
+            //Load mime types.
             mimeTypes = new MimeTypes("./conf/mime.conf");
             //Set up logger.
             String timeStamp = Long.toString(System.currentTimeMillis());
-            Logger logger = new Logger("Log:" + timeStamp);
+            Logger logger = new Logger("Log:" + timeStamp); //Creates a file with a timestamp in the name for each request.
             //Set up socket.
-            socket = new ServerSocket(DEFAULT_PORT);
+            socket = new ServerSocket(port);
             Socket client = null;
-            
             
             while (true)
             {
@@ -52,19 +52,17 @@ public class Server
                 */
                
                 client = socket.accept();
-                try
-                {
-                    Worker worker = new Worker(client, configuration, mimeTypes);
-                    request = requestLine(client);
-                    ResponseFactory responseFactory = new ResponseFactory();
-                    response = responseFactory.getResponse(request, resource);
+                Thread worker = new Thread(new Worker(client, configuration, mimeTypes, logger));
+                worker.start();
+
+                //Move to request class?
+                ResponseFactory responseFactory = new ResponseFactory();
+                response = responseFactory.getResponse(request, resource);
+
+                PrintWriter out = new PrintWriter(client.getOutputStream(),true); //not sure if this should be handled in Response class
+
+                client.close();
                 
-                    PrintWriter out = new PrintWriter(client.getOutputStream(),true); //not sure if this should be handled in Response class
-                }
-                finally
-                {
-                    client.close();
-                }
             }
         }
         catch (IOException e)
@@ -74,12 +72,17 @@ public class Server
         socket.close();        
     }
     
-    private Request requestLine(Socket client) throws IOException
+    public static void main(String args[])
     {
-        InputStream stream = client.getInputStream();
-        Request request = new Request(stream);
-        
-        //More code parsing request?
-        return request;
+        try
+        {
+            Server server = new Server();
+            server.start();
+        }
+        catch(IOException e)
+        {
+            System.err.println("IOException caught: " + e.getMessage());
+            //Throw 500 here!
+        }
     }
 }

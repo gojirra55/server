@@ -49,6 +49,8 @@ public class Request
     
     public void parse()
     {
+        try
+        {
         //Read line and create approrpiate Responses from ResponseFactory?
         
         //Not sure about these. - Jason
@@ -59,6 +61,12 @@ public class Request
         HttpdConf httpdConf = new HttpdConf(body);
         Resource resource = new Resource(uri, httpdConf);
         response = responseFactory.getResponse(this, resource);
+        }
+        catch (IOException e)
+        {
+            System.err.println("Caught IOException: " + e.getMessage());
+            response = responseFactory.getResponse(this, resource);
+        }
     }
     
     //Accessors

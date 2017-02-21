@@ -5,31 +5,39 @@
  */
 package csc667_webserver;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
- * @author Josh
+ * @author Josh and Jason
  */
 public class Worker extends Thread
 {
     private Socket client = null;
     private MimeTypes mimes = null;
     private HttpdConf config = null;
+    private Logger logger;
     
-    public Worker(Socket socket, HttpdConf config, MimeTypes mimes){
+    public Worker(Socket socket, HttpdConf config, MimeTypes mimes, Logger logger){
         this.client = socket;
         this.config = config;
         this.mimes = mimes;
+        this.logger = logger;
     }
-    public void run(){
-        try{
-            InputStream input = client.getInputStream();
+    public void run()
+    {
+        
+        
+        try
+        {
+            InputStream stream = client.getInputStream();
+            Request request = new Request(stream);
+            request.parse();
+            
+            
+            //Old code
+            /*InputStream input = client.getInputStream();
             OutputStream output = client.getOutputStream();
             long timer = System.currentTimeMillis();
             output.write(("HTTP/1.1 200 OK\n\nWorker: "+ this.config + "==" + timer).getBytes());
@@ -37,9 +45,11 @@ public class Worker extends Thread
             output.close();
             input.close();
             
-            System.out.println("Request was processed in: " + timer);
-        } catch (IOException ex) {
-            Logger.getLogger(Worker.class.getName()).log(Level.SEVERE, null, ex); //auto filled from compiler
+            System.out.println("Request was processed in: " + timer);*/
+        }
+        catch (IOException e)
+        {
+            //Return 400 here?
         }
     }
 }
