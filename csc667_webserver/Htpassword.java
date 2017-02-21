@@ -21,7 +21,7 @@ public class Htpassword extends ConfigurationReader {
         System.out.println("Password file: " + filename);
 
         this.passwords = new HashMap<String, String>();
-        this.load();
+        this.load();//calls configReader load()
     }
 
     protected void parseLine(String line) {
