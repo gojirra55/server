@@ -18,6 +18,7 @@ public class Worker extends Thread
     private MimeTypes mimes = null;
     private HttpdConf config = null;
     private Logger logger;
+    private Request request;
     
     public Worker(Socket socket, HttpdConf config, MimeTypes mimes, Logger logger){
         this.client = socket;
@@ -32,8 +33,10 @@ public class Worker extends Thread
         try
         {
             InputStream stream = client.getInputStream();
-            Request request = new Request(stream);
-            request.parse();
+            try
+            {
+                request = new Request(stream);
+                request.parse();
             
             
             //Old code
@@ -46,10 +49,18 @@ public class Worker extends Thread
             input.close();
             
             System.out.println("Request was processed in: " + timer);*/
+            }
+            catch(BadRequest e)
+            {
+                System.err.println("Caught exception: " + e.getMessage());
+            }
+            
+            //No BadRequest, create resource.
+            Resource resource = new Resource(request.getUri(), config);
         }
-        catch (IOException e)
+        catch(IOException e)
         {
-            //Return 400 here?
+            System.err.println("Caught exception: " + e.getMessage());
         }
     }
 }

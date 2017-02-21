@@ -27,13 +27,16 @@ public class Request
     {
     }
     
-    public Request(InputStream client) throws IOException
+    public Request(InputStream client) throws IOException, BadRequest
     {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(client));
         
         //This combines all lines until it reaches "END" and makes one request.
         //Is that the correct implementation? - Jason
-        line[0] = bufferedReader.readLine();
+        if((line[0] = bufferedReader.readLine()) == null)
+        {
+            throw new BadRequest("Error 400: Bad Request.");
+        }
         line[1] = bufferedReader.readLine();
         line[2] = "";
         
@@ -65,7 +68,6 @@ public class Request
         catch (IOException e)
         {
             System.err.println("Caught IOException: " + e.getMessage());
-            response = responseFactory.getResponse(this, resource);
         }
     }
     
