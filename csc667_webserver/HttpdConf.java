@@ -13,7 +13,7 @@ import java.util.Hashtable;
 import java.util.Dictionary;
 /**
  *
- * @author Josh
+ * @author Josh and Jason
  */
 public class HttpdConf extends ConfigurationReader
 {
