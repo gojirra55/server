@@ -16,13 +16,13 @@ import java.util.Dictionary;
  */
 public class MimeTypes extends ConfigurationReader
 {
-    private Dictionary types;
+    private Dictionary types; //jrob on ilearn said to do HashMap<String,String> types;
     private BufferedReader bufferedReader;
     
     public MimeTypes(String fileNames) throws IOException
     {
     	super(fileNames);
-        this.types = new Hashtable();
+        this.types = new Hashtable(); //HashMap<>();
         this.bufferedReader = new BufferedReader(new FileReader(this.getFile()));
         this.load();
     }
