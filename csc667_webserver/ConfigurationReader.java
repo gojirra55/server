@@ -62,6 +62,7 @@ public class ConfigurationReader
     {
         //load logic based off httpdconf constructor
         dictionary = new Hashtable<String,String>();
+        bufferedReader = new BufferedReader(new FileReader(file));
         String line, splitLine[];
         
         while((line = bufferedReader.readLine()) != null)
@@ -69,5 +70,9 @@ public class ConfigurationReader
             splitLine = line.split("", 2);
             dictionary.put(splitLine[0], splitLine[1]);
         }
+    }
+    
+    public File getFile(){
+        return this.file;
     }
 }
