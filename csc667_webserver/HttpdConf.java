@@ -17,8 +17,8 @@ import java.util.Dictionary;
  */
 public class HttpdConf extends ConfigurationReader
 {
-    private Dictionary aliases;
-    private Dictionary scriptAliases;
+    private Dictionary aliases; //HashMap<String,String> aliases according to ilearn
+    private Dictionary scriptAliases; //HashMap<String,String> scriptAliases according to ilearn
     private int portNum;
     
     public HttpdConf(String fileName) throws IOException
