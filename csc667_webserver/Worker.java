@@ -47,6 +47,10 @@ public class Worker extends Thread
             
             System.out.println("Request was processed in: " + timer);*/
         }
+        catch(BadRequest e)
+        {
+            
+        }
         catch (IOException e)
         {
             //Return 400 here?
