@@ -9,7 +9,7 @@ import java.io.IOException;
 
 /**
  *
- * @author Josh
+ * @author Josh and Jason
  */
 public class Htaccess extends ConfigurationReader
 {
@@ -27,7 +27,6 @@ public class Htaccess extends ConfigurationReader
     }
     
     public void load(){
-        //add code here
         
     }
     public boolean isAuthorized(String username, String password){
