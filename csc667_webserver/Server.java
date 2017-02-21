@@ -54,7 +54,6 @@ public class Server
                 client = socket.accept();
                 Thread worker = new Thread(new Worker(client, configuration, mimeTypes, logger));
                 worker.start();
-                request = requestLine(client);
 
                 //Move to request class?
                 ResponseFactory responseFactory = new ResponseFactory();
@@ -73,14 +72,6 @@ public class Server
         socket.close();        
     }
     
-    private Request requestLine(Socket client) throws IOException
-    {
-        InputStream stream = client.getInputStream();
-        Request request = new Request(stream);
-        
-        return request;
-    }
-    
     public static void main(String args[])
     {
         try
@@ -91,6 +82,7 @@ public class Server
         catch(IOException e)
         {
             System.err.println("IOException caught: " + e.getMessage());
+            //Throw 500 here!
         }
     }
 }

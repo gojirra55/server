@@ -25,9 +25,19 @@ public class Worker extends Thread
         this.mimes = mimes;
         this.logger = logger;
     }
-    public void run(){
-        try{
-            InputStream input = client.getInputStream();
+    public void run()
+    {
+        
+        
+        try
+        {
+            InputStream stream = client.getInputStream();
+            Request request = new Request(stream);
+            request.parse();
+            
+            
+            //Old code
+            /*InputStream input = client.getInputStream();
             OutputStream output = client.getOutputStream();
             long timer = System.currentTimeMillis();
             output.write(("HTTP/1.1 200 OK\n\nWorker: "+ this.config + "==" + timer).getBytes());
@@ -35,8 +45,11 @@ public class Worker extends Thread
             output.close();
             input.close();
             
-            System.out.println("Request was processed in: " + timer);
-        } catch (IOException e) {
+            System.out.println("Request was processed in: " + timer);*/
+        }
+        catch (IOException e)
+        {
+            //Return 400 here?
         }
     }
 }
