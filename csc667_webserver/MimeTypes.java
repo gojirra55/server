@@ -23,7 +23,7 @@ public class MimeTypes extends ConfigurationReader
     {
     	super(fileNames);
         this.types = new Hashtable();
-        this.bufferedReader = new BufferedReader(new FileReader(getFile()));
+        this.bufferedReader = new BufferedReader(new FileReader(this.getFile()));
         this.load();
     }
 
