@@ -5,24 +5,35 @@
  */
 package csc667_webserver;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Hashtable;
+import java.util.Dictionary;
 /**
  *
  * @author Josh
  */
 public class HttpdConf extends ConfigurationReader
 {
-    private Dictionary aliases; //assumption:need library for this to work
-    private Dictionary scriptAliases; //assumption:need library for this to work
+    private Dictionary aliases;
+    private Dictionary scriptAliases;
     private int portNum;
     
     public HttpdConf(String fileName) throws IOException
     {
         super(fileName);
+        this.aliases = new Hashtable();
+        this.scriptAliases = new Hashtable();
+        //moved try-catch to load method
+    }
+    
+    public void load()
+    {
         try
         {
-            FileReader fileReader = new FileReader(fileName);
+            FileReader fileReader = new FileReader(this.getFile());
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             aliases = new Hashtable<String, String>();
             String line;
@@ -50,12 +61,6 @@ public class HttpdConf extends ConfigurationReader
         {
             System.err.println("Caught IOException: " + e.getMessage());
         }
-        
-    }
-    
-    public void load()
-    {
-        
     }
     
     public int getPort(){
