@@ -49,11 +49,11 @@ public class Worker extends Thread
         }
         catch(BadRequest e)
         {
-            
+            System.err.println("Caught exception: " + e.getMessage());
         }
-        catch (IOException e)
+        catch(IOException e)
         {
-            //Return 400 here?
+            System.err.println("Caught exception: " + e.getMessage());
         }
     }
 }
