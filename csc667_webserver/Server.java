@@ -42,7 +42,6 @@ public class Server
             socket = new ServerSocket(port);
             Socket client = null;
             
-            
             while (true)
             {
                 /* ---Pulled from Java docs---
@@ -53,7 +52,7 @@ public class Server
                 */
                
                 client = socket.accept();
-                Thread worker = new Thread(new Worker(client, configuration, mimeTypes));
+                Thread worker = new Thread(new Worker(client, configuration, mimeTypes, logger));
                 worker.start();
                 request = requestLine(client);
 
@@ -82,7 +81,7 @@ public class Server
         return request;
     }
     
-    public void main(String args[])
+    public static void main(String args[])
     {
         try
         {
