@@ -14,7 +14,6 @@ import java.util.Hashtable;
 
 
 /**
- *
  * @author Josh and Jason
  */
 public class ConfigurationReader
@@ -59,7 +58,16 @@ public class ConfigurationReader
         return result;
     }
 
-    public void load(){
+    public void load() throws IOException
+    {
+        //load logic based off httpdconf constructor
+        dictionary = new Hashtable<String,String>();
+        String line, splitLine[];
         
+        while((line = bufferedReader.readLine()) != null)
+        {
+            splitLine = line.split("", 2);
+            dictionary.put(splitLine[0], splitLine[1]);
+        }
     }
 }
