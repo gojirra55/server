@@ -12,6 +12,11 @@ import java.security.MessageDigest;
 
 import java.io.IOException;
 
+/**
+ *
+ * @author Josh and Jason
+ */
+
 public class Htpassword extends ConfigurationReader {
 
     private HashMap<String, String> passwords;
