@@ -28,8 +28,6 @@ public class Worker extends Thread
     }
     public void run()
     {
-        
-        
         try
         {
             InputStream stream = client.getInputStream();
@@ -37,31 +35,11 @@ public class Worker extends Thread
             {
                 request = new Request(stream);
                 request.parse();
-            
-            
-            //Old code
-            /*InputStream input = client.getInputStream();
-            OutputStream output = client.getOutputStream();
-            long timer = System.currentTimeMillis();
-            output.write(("HTTP/1.1 200 OK\n\nWorker: "+ this.config + "==" + timer).getBytes());
-            
-            output.close();
-            input.close();
-            
-            System.out.println("Request was processed in: " + timer);*/
             }
             catch(BadRequest e)
             {
-                System.err.println("Caught exception: " + e.getMessage());
+                System.err.println("Caught BadRequest exception: " + e.getMessage());
             }
-            
-            //No BadRequest, create resource.
-            Resource resource = new Resource(request.getUri(), config); //Check Aliases and Scripts in Resource?
-            //Check htaccess here.
-            //Generate Response here.
-                //ResponseFactory responseFactory = new ResponseFactory();
-                //response = responseFactory.getResponse(request, resource);
-            //Send Response to client.
         }
         catch(IOException e)
         {

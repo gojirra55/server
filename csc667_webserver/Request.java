@@ -6,7 +6,7 @@
 package csc667_webserver;
 
 import java.io.*;
-import java.util.Dictionary;
+import java.util.HashMap;
 
 /**
  *
@@ -15,60 +15,76 @@ import java.util.Dictionary;
 public class Request
 {
     private String uri;
-    private String body; //UML Diagram shows type "?"... ? Maybe should be File?
+    private String body; //UML Diagram shows type "?"... ?
     private String verb;
     private String httpVersion;
-    private Dictionary headers;
-    private String[] line;
+    private HashMap headers;
+    private String[] requestLine;
+    private String headerLine;
+    private String messageBody;
     private ResponseFactory responseFactory = new ResponseFactory();
     private Response response;
-    
+    private BufferedReader bufferedReader;
     public Request(String test)
     {
-    }
-    
-    public Request(InputStream client) throws IOException, BadRequest
-    {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(client));
-        
-        //This combines all lines until it reaches "END" and makes one request.
-        //Is that the correct implementation? - Jason
-        if((line[0] = bufferedReader.readLine()) == null)
-        {
-            throw new BadRequest("Error 400: Bad Request.");
-        }
-        line[1] = bufferedReader.readLine();
-        line[2] = "";
-        
-        while (!line[2].contains("END"))
-        {
-            line[2] += bufferedReader.readLine();
-        }
-        
-        parse();
-        
         
     }
     
-    public void parse()
+    public Request(InputStream client) throws BadRequest, IOException
     {
-        try
-        {
-        //Read line and create approrpiate Responses from ResponseFactory?
+        bufferedReader = new BufferedReader(new InputStreamReader(client));
+        getRequestLine();
+        getHeaders();
         
-        //Not sure about these. - Jason
-        verb = line[0]; 
+        
+        //
+        headerLine = bufferedReader.readLine();
+        
+        messageBody = "";
+        while (!messageBody.contains("END"))
+        {
+            messageBody += bufferedReader.readLine();
+        }
+        
+        
+        
+        
         uri = line[1];
         body = line[2];
-        
+    }
+    
+    public void parse() throws IOException
+    {
         HttpdConf httpdConf = new HttpdConf(body);
         Resource resource = new Resource(uri, httpdConf);
         response = responseFactory.getResponse(this, resource);
-        }
-        catch (IOException e)
+    }
+    
+    private void getRequestLine() throws BadRequest, IOException
+    {
+        String line;
+        if((line = bufferedReader.readLine()) == null)
         {
-            System.err.println("Caught IOException: " + e.getMessage());
+            throw new BadRequest("Error 400: Bad Request.");
+        } 
+        //Request Line: Method Request-URI HTTP-Version CRLF.
+        requestLine = line.split(" ", 3);
+        verb = requestLine[0];
+        uri = requestLine[1];
+        httpVersion = requestLine[2];
+    }
+    
+    private void getHeaders()
+    {
+        String line;
+        while((line = bufferedReader.readLine() != null)
+        {
+            String headerLine = headers.split
+            headers.put()
         }
+        
+            
+        
     }
     
     //Accessors
