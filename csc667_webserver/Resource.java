@@ -26,7 +26,7 @@ public class Resource {
             absolutePath = uri;
         }
         
-        //Check if protected.
+        //Check if protected. Check if directory contains Htaccess.
     }
     public String absolutePath(){
         return absolutePath;
