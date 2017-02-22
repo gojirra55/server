@@ -5,6 +5,9 @@
  */
 package csc667_webserver;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Base64;
 import java.nio.charset.Charset;
@@ -20,6 +23,7 @@ import java.io.IOException;
 public class Htpassword extends ConfigurationReader {
 
     private HashMap<String, String> passwords;
+    //private HashMap<String, String> users;
 
     public Htpassword(String filename) throws IOException {
         super(filename);
@@ -36,6 +40,29 @@ public class Htpassword extends ConfigurationReader {
             passwords.put(tokens[0], tokens[1].replace("{SHA}", "").trim());
         }
     }
+    public void load() throws FileNotFoundException{
+        try{
+            FileReader fileReader = new FileReader(this.getFile());
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            
+            String line = "";
+            String splitLine[];
+            
+            while(hasMoreLines()){ //this "should" pass splitLine elements 0,1 into the parseLine respectively; Then store each in hashmap password, accordingly
+                splitLine = line.split(":",2);
+                if(splitLine[1].equals("{SHA}")){
+                    parseLine(splitLine[1]);
+                }else{
+                    parseLine(splitLine[0]);
+                }                
+            }
+            bufferedReader.close();
+        } catch(FileNotFoundException e){
+            System.err.println("Caught FileNotFoundException: " + e.getMessage());
+        } catch (IOException e) {
+            System.err.println("Caught IOException: " + e.getMessage());
+        }
+    }
 
     public boolean isAuthorized(String authInfo) {
         // authInfo is provided in the header received from the client
@@ -49,6 +76,7 @@ public class Htpassword extends ConfigurationReader {
         String[] tokens = credentials.split(":");
 
         // TODO: implement this
+        
         return false;
     }
 
