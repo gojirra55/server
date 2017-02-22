@@ -26,6 +26,7 @@ public class HttpdConf extends ConfigurationReader
         super(fileName);
         this.aliases = new Hashtable();
         this.scriptAliases = new Hashtable();
+        this.load();
         //moved try-catch to load method
     }
     
@@ -33,8 +34,8 @@ public class HttpdConf extends ConfigurationReader
     {
         try
         {
-            FileReader fileReader = new FileReader(this.getFile());
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            //FileReader fileReader = new FileReader(this.getFile());
+            //BufferedReader bufferedReader = new BufferedReader(fileReader);
             aliases = new Hashtable<String, String>();
             String line;
             String splitLine[];
