@@ -66,7 +66,13 @@ public class HttpdConf extends ConfigurationReader
         }
     }
     
-    public int getPort(){
+    public int getPort()
+    {
         return portNum;
+    }
+    
+    public String getLoggerFile()
+    {
+        return loggerFile;
     }
 }
