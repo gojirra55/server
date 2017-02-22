@@ -20,6 +20,7 @@ public class HttpdConf extends ConfigurationReader
     private Dictionary aliases; //HashMap<String,String> aliases according to ilearn
     private Dictionary scriptAliases; //HashMap<String,String> scriptAliases according to ilearn
     private int portNum;
+    private BufferedReader bufferedReader;
     
     public HttpdConf(String fileName) throws IOException
     {
@@ -27,6 +28,7 @@ public class HttpdConf extends ConfigurationReader
         this.aliases = new Hashtable();
         this.scriptAliases = new Hashtable();
         this.load();
+        this.bufferedReader = new BufferedReader(getBufferedReader());
         //moved try-catch to load method
     }
     
@@ -37,11 +39,11 @@ public class HttpdConf extends ConfigurationReader
             //FileReader fileReader = new FileReader(this.getFile());
             //BufferedReader bufferedReader = new BufferedReader(fileReader);
             aliases = new Hashtable<String, String>();
-            String line;
+            String line = "";
             String splitLine[];
             
             //Read config file.
-            while ((line = bufferedReader.readLine()) != null)
+            while (hasMoreLines())
             {
                 splitLine = line.split("", 2);
                 if(splitLine[0] == "Listen"){
