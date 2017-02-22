@@ -17,15 +17,18 @@ public class Resource {
     public Resource(String uri, HttpdConf config){
 
         //Check if uri is script aliased.
-        if (config.checkScriptAliases(uri)) //Add function that checks if string contains alias to HttpdConf.
+        if (config.checkAliased(uri))
+        {
+            isScript = false;
+        }
+        else if (config.checkScriptAliases(uri)) //Add function that checks if string contains alias to HttpdConf.
         {
             isScript = true;
         }
-        else
-        {
-            absolutePath = uri;
-        }
         
+        //Resolve path (DOC_ROOT + URI);
+        //Check if file.
+        //If not File, append DirIndex, else absolute path.
         //Check if protected. Check if directory contains Htaccess.
     }
     public String absolutePath(){
