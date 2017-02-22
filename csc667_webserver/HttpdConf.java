@@ -7,7 +7,6 @@ package csc667_webserver;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Dictionary;
@@ -21,6 +20,7 @@ public class HttpdConf extends ConfigurationReader
     private Dictionary scriptAliases; //HashMap<String,String> scriptAliases according to ilearn
     private int portNum;
     private BufferedReader bufferedReader;
+    private String loggerFile; //Get logger file from config file.
     
     public HttpdConf(String fileName) throws IOException
     {
@@ -66,7 +66,13 @@ public class HttpdConf extends ConfigurationReader
         }
     }
     
-    public int getPort(){
+    public int getPort()
+    {
         return portNum;
+    }
+    
+    public String getLoggerFile()
+    {
+        return loggerFile;
     }
 }

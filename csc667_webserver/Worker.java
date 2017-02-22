@@ -59,6 +59,8 @@ public class Worker extends Thread
             Resource resource = new Resource(request.getUri(), config); //Check Aliases and Scripts in Resource?
             //Check htaccess here.
             //Generate Response here.
+                //ResponseFactory responseFactory = new ResponseFactory();
+                //response = responseFactory.getResponse(request, resource);
             //Send Response to client.
         }
         catch(IOException e)
