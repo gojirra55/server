@@ -16,11 +16,10 @@ public class Logger {
     private FileWriter fileWriter;
     
     public Logger(String fileName) throws IOException
-    {
+    { 
         file = new File(fileName);
         file.createNewFile();
         fileWriter = new FileWriter(file, true);
-        
     }
     
     public void write(Request request, Response response) throws IOException
