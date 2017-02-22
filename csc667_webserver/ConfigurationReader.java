@@ -19,7 +19,7 @@ import java.util.Hashtable;
 public abstract class ConfigurationReader
 {
     private File file;
-    private Dictionary dictionary;
+    private Dictionary dictionary; //change ot HashMap<S,S>
     private BufferedReader bufferedReader;
     
     public ConfigurationReader(String fileName) throws IOException
@@ -28,11 +28,11 @@ public abstract class ConfigurationReader
         {
             dictionary = new Hashtable();
             bufferedReader = new BufferedReader(new FileReader(file));
-            int currentLineNum = 0;
-            while (hasMoreLines())
+            //int currentLineNum = 0;
+            /*while (hasMoreLines())
             {
                 dictionary.put(nextLine(), currentLineNum++);
-            }
+            }*/
         }
         catch (IOException e)
         {
@@ -71,5 +71,9 @@ public abstract class ConfigurationReader
         
     public File getFile(){
         return this.file;
+    }
+    
+    public BufferedReader getBufferedReader(){
+        return this.bufferedReader;
     }
 }
