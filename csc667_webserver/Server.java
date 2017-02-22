@@ -7,8 +7,6 @@ package csc667_webserver;
 
 import java.io.*;
 import java.net.*;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.Dictionary;
 
 /**
@@ -23,7 +21,6 @@ public class Server
     private Dictionary accessFiles;
     private Request request;
     private Resource resource;
-    private Response response;
     public static final int DEFAULT_PORT = 8080;
     
     public void start() throws IOException
@@ -36,8 +33,7 @@ public class Server
             //Load mime types.
             mimeTypes = new MimeTypes("./conf/mime.conf");
             //Set up logger.
-            String timeStamp = Long.toString(System.currentTimeMillis());
-            Logger logger = new Logger("Log:" + timeStamp); //Creates a file with a timestamp in the name for each request.
+            Logger logger = new Logger(configuration.getLoggerFile());
             //Set up socket.
             socket = new ServerSocket(port);
             Socket client = null;
@@ -54,10 +50,6 @@ public class Server
                 client = socket.accept();
                 Thread worker = new Thread(new Worker(client, configuration, mimeTypes, logger));
                 worker.start();
-
-                //Move to request class?
-                ResponseFactory responseFactory = new ResponseFactory();
-                response = responseFactory.getResponse(request, resource);
 
                 PrintWriter out = new PrintWriter(client.getOutputStream(),true); //not sure if this should be handled in Response class
 
