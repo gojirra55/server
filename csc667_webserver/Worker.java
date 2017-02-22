@@ -56,7 +56,10 @@ public class Worker extends Thread
             }
             
             //No BadRequest, create resource.
-            Resource resource = new Resource(request.getUri(), config);
+            Resource resource = new Resource(request.getUri(), config); //Check Aliases and Scripts in Resource?
+            //Check htaccess here.
+            //Generate Response here.
+            //Send Response to client.
         }
         catch(IOException e)
         {

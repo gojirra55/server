@@ -10,16 +10,34 @@ package csc667_webserver;
  * @author Josh and Jason
  */
 public class Resource {
+    private String absolutePath;
+    private boolean isScript;
+    private boolean isProtected;
+    
     public Resource(String uri, HttpdConf config){
+
+        //Check if uri is script aliased.
+        if (config.checkScriptAliases(uri)) //Add function that checks if string contains alias to HttpdConf.
+        {
+            isScript = true;
+        }
+        else
+        {
+            absolutePath = uri;
+        }
         
+        //Check if protected. Check if directory contains Htaccess.
     }
     public String absolutePath(){
-        return "";
+        return absolutePath;
     }
-    public boolean isScript(){
-        return true;
+    
+    public boolean isScript()
+    {
+        return isScript;
     }
+    
     public boolean isProtected(){
-        return true;
+        return isProtected;
     }
 }

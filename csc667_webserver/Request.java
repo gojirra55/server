@@ -10,7 +10,7 @@ import java.util.Dictionary;
 
 /**
  *
- * @author Jason Newman
+ * @author Josh and Jason
  */
 public class Request
 {

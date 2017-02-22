@@ -7,7 +7,7 @@ package csc667_webserver;
 
 /**
  *
- * @author Josh
+ * @author Josh and Jason
  */
 public class ResponseFactory {
     public Response getResponse(Request request, Resource resource){

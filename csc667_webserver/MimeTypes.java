@@ -16,19 +16,21 @@ import java.util.Dictionary;
  */
 public class MimeTypes extends ConfigurationReader
 {
-    private Dictionary types;
+    private Dictionary types; //jrob on ilearn said to do HashMap<String,String> types;
     private BufferedReader bufferedReader;
     
     public MimeTypes(String fileNames) throws IOException
     {
     	super(fileNames);
-        this.types = new Hashtable();
-        this.bufferedReader = new BufferedReader(new FileReader(getFile()));
+        this.types = new Hashtable(); //HashMap<>();
+        //this.bufferedReader = new BufferedReader(new FileReader(this.getFile()));
         this.load();
     }
 
     public void load() throws IOException
     {        
+        FileReader fileReader = new FileReader(this.getFile());
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
         types = new Hashtable<String, String>();
         
         String line;
@@ -42,7 +44,7 @@ public class MimeTypes extends ConfigurationReader
 
     public String lookup(String extension)
     {
-        
+        //return types.get(extension); not 100% sure on this statement
         return "";
     }
 }

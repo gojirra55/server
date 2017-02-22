@@ -5,31 +5,45 @@
  */
 package csc667_webserver;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Hashtable;
+import java.util.Dictionary;
 /**
  *
- * @author Josh
+ * @author Josh and Jason
  */
 public class HttpdConf extends ConfigurationReader
 {
-    private Dictionary aliases; //assumption:need library for this to work
-    private Dictionary scriptAliases; //assumption:need library for this to work
+    private Dictionary aliases; //HashMap<String,String> aliases according to ilearn
+    private Dictionary scriptAliases; //HashMap<String,String> scriptAliases according to ilearn
     private int portNum;
+    private BufferedReader bufferedReader;
     
     public HttpdConf(String fileName) throws IOException
     {
         super(fileName);
+        this.aliases = new Hashtable();
+        this.scriptAliases = new Hashtable();
+        this.load();
+        this.bufferedReader = new BufferedReader(getBufferedReader());
+        //moved try-catch to load method
+    }
+    
+    public void load()
+    {
         try
         {
-            FileReader fileReader = new FileReader(fileName);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            //FileReader fileReader = new FileReader(this.getFile());
+            //BufferedReader bufferedReader = new BufferedReader(fileReader);
             aliases = new Hashtable<String, String>();
-            String line;
+            String line = "";
             String splitLine[];
             
             //Read config file.
-            while ((line = bufferedReader.readLine()) != null)
+            while (hasMoreLines())
             {
                 splitLine = line.split("", 2);
                 if(splitLine[0] == "Listen"){
@@ -50,12 +64,6 @@ public class HttpdConf extends ConfigurationReader
         {
             System.err.println("Caught IOException: " + e.getMessage());
         }
-        
-    }
-    
-    public void load()
-    {
-        
     }
     
     public int getPort(){

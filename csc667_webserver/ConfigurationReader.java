@@ -16,10 +16,10 @@ import java.util.Hashtable;
 /**
  * @author Josh and Jason
  */
-public class ConfigurationReader
+public abstract class ConfigurationReader
 {
     private File file;
-    private Dictionary dictionary;
+    private Dictionary dictionary; //change ot HashMap<S,S>
     private BufferedReader bufferedReader;
     
     public ConfigurationReader(String fileName) throws IOException
@@ -28,11 +28,11 @@ public class ConfigurationReader
         {
             dictionary = new Hashtable();
             bufferedReader = new BufferedReader(new FileReader(file));
-            int currentLineNum = 0;
-            while (hasMoreLines())
+            //int currentLineNum = 0;
+            /*while (hasMoreLines())
             {
                 dictionary.put(nextLine(), currentLineNum++);
-            }
+            }*/
         }
         catch (IOException e)
         {
@@ -58,21 +58,22 @@ public class ConfigurationReader
         return result;
     }
 
-    public void load() throws IOException
+    abstract public void load() throws IOException;
+    /* //load logic based off httpdconf constructor
+    dictionary = new Hashtable<String,String>();
+    bufferedReader = new BufferedReader(new FileReader(file));
+    String line, splitLine[];
+    while((line = bufferedReader.readLine()) != null)
     {
-        //load logic based off httpdconf constructor
-        dictionary = new Hashtable<String,String>();
-        bufferedReader = new BufferedReader(new FileReader(file));
-        String line, splitLine[];
+    splitLine = line.split("", 2);
+    dictionary.put(splitLine[0], splitLine[1]);
+    }*/
         
-        while((line = bufferedReader.readLine()) != null)
-        {
-            splitLine = line.split("", 2);
-            dictionary.put(splitLine[0], splitLine[1]);
-        }
-    }
-    
     public File getFile(){
         return this.file;
+    }
+    
+    public BufferedReader getBufferedReader(){
+        return this.bufferedReader;
     }
 }
