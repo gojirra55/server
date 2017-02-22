@@ -37,9 +37,10 @@ public class Htaccess extends ConfigurationReader {
         try {
             FileReader fileReader = new FileReader(this.getFile());
             BufferedReader bufferedReader = new BufferedReader(fileReader);
-            String line, splitLine[];
+            String line = "";
+            String splitLine[];
 
-            while ((line = bufferedReader.readLine()) != null) {
+            while (hasMoreLines()) {
                 splitLine = line.split("", 2);
                 if (splitLine[0].equals("AuthUserFile")) {
                     this.userFile.parseLine(splitLine[1]);
@@ -60,11 +61,11 @@ public class Htaccess extends ConfigurationReader {
 
     }
 
-    public boolean isAuthorized(String username, String password) {
+    public boolean isAuthorized(String username, String password) { //might try isAuthorized(String authInfo
         boolean authCheck = false;
         
-        if () {
-
+        if (Htpassword.isAuthorized(username,password)) {
+            
         }
 
         return authCheck;
