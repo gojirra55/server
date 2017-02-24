@@ -6,7 +6,7 @@
 package csc667_webserver;
 
 import java.io.*;
-import java.util.HashMap;
+import java.util.*;
 
 /**
  *
@@ -18,9 +18,9 @@ public class Request
     private String body; //UML Diagram shows type "?"... ?
     private String verb;
     private String httpVersion;
-    private HashMap headers;
+    private Map<String, String> headers;
+    private String[] headerLine;
     private String[] requestLine;
-    private String headerLine;
     private String messageBody;
     private ResponseFactory responseFactory = new ResponseFactory();
     private Response response;
@@ -33,24 +33,10 @@ public class Request
     public Request(InputStream client) throws BadRequest, IOException
     {
         bufferedReader = new BufferedReader(new InputStreamReader(client));
+        headers = new HashMap<String, String>();
         getRequestLine();
         getHeaders();
-        
-        
-        //
-        headerLine = bufferedReader.readLine();
-        
-        messageBody = "";
-        while (!messageBody.contains("END"))
-        {
-            messageBody += bufferedReader.readLine();
-        }
-        
-        
-        
-        
-        uri = line[1];
-        body = line[2];
+        getBody();
     }
     
     public void parse() throws IOException
@@ -62,11 +48,7 @@ public class Request
     
     private void getRequestLine() throws BadRequest, IOException
     {
-        String line;
-        if((line = bufferedReader.readLine()) == null)
-        {
-            throw new BadRequest("Error 400: Bad Request.");
-        } 
+        String line = getStringCheckNull();
         //Request Line: Method Request-URI HTTP-Version CRLF.
         requestLine = line.split(" ", 3);
         verb = requestLine[0];
@@ -74,17 +56,37 @@ public class Request
         httpVersion = requestLine[2];
     }
     
-    private void getHeaders()
+    private void getHeaders() throws BadRequest, IOException
     {
+        //An empty line seperates headers from body. Read lines until empty line is found.
         String line;
-        while((line = bufferedReader.readLine() != null)
+        while((line = getStringCheckNull()) != "")
         {
-            String headerLine = headers.split
-            headers.put()
+            headerLine = line.split(":", 2);
+            headers.put(headerLine[0], headerLine[1]);
+        }
+    }
+    
+    private void getBody() throws IOException
+    {
+        //Is it possible to get the body this way without using content-length header? What is content-length needed for?
+        messageBody = "";
+        String line;
+        while ((line = bufferedReader.readLine()) != null)
+        {
+            messageBody += line;
+        }
+    }
+    
+    private String getStringCheckNull() throws BadRequest, IOException
+    {
+        String line = bufferedReader.readLine();
+        if(line == null)
+        {
+            throw new BadRequest("Error 400: Bad Request.");
         }
         
-            
-        
+        return line;
     }
     
     //Accessors
