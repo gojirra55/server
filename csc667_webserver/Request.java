@@ -34,16 +34,13 @@ public class Request
     {
         bufferedReader = new BufferedReader(new InputStreamReader(client));
         headers = new HashMap<String, String>();
+    }
+    
+    public void parse() throws BadRequest, IOException
+    {
         getRequestLine();
         getHeaders();
         getBody();
-    }
-    
-    public void parse() throws IOException
-    {
-        HttpdConf httpdConf = new HttpdConf(body);
-        Resource resource = new Resource(uri, httpdConf);
-        response = responseFactory.getResponse(this, resource);
     }
     
     private void getRequestLine() throws BadRequest, IOException

@@ -14,11 +14,13 @@ import java.net.Socket;
  */
 public class Worker extends Thread
 {
-    private Socket client = null;
-    private MimeTypes mimes = null;
-    private HttpdConf config = null;
-    private Logger logger;
+    private final Socket client;
+    private MimeTypes mimes;
+    private final HttpdConf config;
+    private final Logger logger;
     private Request request;
+    private Resource resource;
+    private Response response;
     
     public Worker(Socket socket, HttpdConf config, MimeTypes mimes, Logger logger){
         this.client = socket;
@@ -35,10 +37,15 @@ public class Worker extends Thread
             {
                 request = new Request(stream);
                 request.parse();
+                resource = new Resource(request.getUri(), config);
+                //Create response.
+                //Log response.
+                //Send response.
             }
             catch(BadRequest e)
             {
                 System.err.println("Caught BadRequest exception: " + e.getMessage());
+                logger.write(request, response);
             }
         }
         catch(IOException e)
