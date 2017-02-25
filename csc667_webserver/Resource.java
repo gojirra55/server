@@ -16,22 +16,25 @@ public class Resource {
     
     public Resource(String uri, HttpdConf config){
 
-        //Check if uri is script aliased.
-        if (config.checkAliased(uri))
+        //Check if uri is Alias, Script Alias, or path.
+        if ((absolutePath = config.checkAliases(uri)) != null)
         {
             isScript = false;
         }
-        else if (config.checkScriptAliases(uri)) //Add function that checks if string contains alias to HttpdConf.
+        else if ((absolutePath = config.checkScriptAliases(uri)) != null) //Add function that checks if string contains alias to HttpdConf.
         {
             isScript = true;
         }
+        else
+        {
+            absolutePath = config.getServerRoot() + uri;
+        }
         
-        //Resolve path (DOC_ROOT + URI);
-        //Check if file.
-        //If not File, append DirIndex, else absolute path.
         //Check if protected. Check if directory contains Htaccess.
+        //if (new File(absolutePath, )
     }
-    public String absolutePath(){
+    public String absolutePath()
+    {
         return absolutePath;
     }
     
@@ -40,7 +43,8 @@ public class Resource {
         return isScript;
     }
     
-    public boolean isProtected(){
+    public boolean isProtected()
+    {
         return isProtected;
     }
 }

@@ -6,7 +6,7 @@
 package csc667_webserver;
 
 import java.io.*;
-import java.util.Dictionary;
+import java.util.*;
 
 /**
  *
@@ -15,60 +15,75 @@ import java.util.Dictionary;
 public class Request
 {
     private String uri;
-    private String body; //UML Diagram shows type "?"... ? Maybe should be File?
+    private String body; //UML Diagram shows type "?"... ?
     private String verb;
     private String httpVersion;
-    private Dictionary headers;
-    private String[] line;
+    private Map<String, String> headers;
+    private String[] headerLine;
+    private String[] requestLine;
+    private String messageBody;
     private ResponseFactory responseFactory = new ResponseFactory();
     private Response response;
-    
+    private BufferedReader bufferedReader;
     public Request(String test)
     {
+        
     }
     
-    public Request(InputStream client) throws IOException, BadRequest
+    public Request(InputStream client) throws BadRequest, IOException
     {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(client));
-        
-        //This combines all lines until it reaches "END" and makes one request.
-        //Is that the correct implementation? - Jason
-        if((line[0] = bufferedReader.readLine()) == null)
+        bufferedReader = new BufferedReader(new InputStreamReader(client));
+        headers = new HashMap<String, String>();
+    }
+    
+    public void parse() throws BadRequest, IOException
+    {
+        getRequestLine();
+        getHeaders();
+        getBody();
+    }
+    
+    private void getRequestLine() throws BadRequest, IOException
+    {
+        String line = getStringCheckNull();
+        //Request Line: Method Request-URI HTTP-Version CRLF.
+        requestLine = line.split(" ", 3);
+        verb = requestLine[0];
+        uri = requestLine[1];
+        httpVersion = requestLine[2];
+    }
+    
+    private void getHeaders() throws BadRequest, IOException
+    {
+        //An empty line seperates headers from body. Read lines until empty line is found.
+        String line;
+        while((line = getStringCheckNull()) != "")
+        {
+            headerLine = line.split(":", 2);
+            headers.put(headerLine[0], headerLine[1]);
+        }
+    }
+    
+    private void getBody() throws IOException
+    {
+        //Is it possible to get the body this way without using content-length header? What is content-length needed for?
+        messageBody = "";
+        String line;
+        while ((line = bufferedReader.readLine()) != null)
+        {
+            messageBody += line;
+        }
+    }
+    
+    private String getStringCheckNull() throws BadRequest, IOException
+    {
+        String line = bufferedReader.readLine();
+        if(line == null)
         {
             throw new BadRequest("Error 400: Bad Request.");
         }
-        line[1] = bufferedReader.readLine();
-        line[2] = "";
         
-        while (!line[2].contains("END"))
-        {
-            line[2] += bufferedReader.readLine();
-        }
-        
-        parse();
-        
-        
-    }
-    
-    public void parse()
-    {
-        try
-        {
-        //Read line and create approrpiate Responses from ResponseFactory?
-        
-        //Not sure about these. - Jason
-        verb = line[0]; 
-        uri = line[1];
-        body = line[2];
-        
-        HttpdConf httpdConf = new HttpdConf(body);
-        Resource resource = new Resource(uri, httpdConf);
-        response = responseFactory.getResponse(this, resource);
-        }
-        catch (IOException e)
-        {
-            System.err.println("Caught IOException: " + e.getMessage());
-        }
+        return line;
     }
     
     //Accessors

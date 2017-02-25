@@ -29,6 +29,7 @@ public class Server
         {
             //Load config file.
             configuration = new HttpdConf("./conf/httpd.conf");
+            configuration.load();
             int port = configuration.getPort(); //Need to add lookup function to HttpdConf.
             //Load mime types.
             mimeTypes = new MimeTypes("./conf/mime.conf");
