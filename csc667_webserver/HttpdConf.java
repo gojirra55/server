@@ -42,11 +42,11 @@ public class HttpdConf extends ConfigurationReader
             //Read config file.
             while (hasMoreLines())
             {
-                splitLine = line.split("", 2);
-                if(splitLine[0] == "Listen"){
+                splitLine = line.split(" ", 2);
+                if (splitLine[0].equals("Listen")){
                     portNum = Integer.parseInt(splitLine[1]);
                 }
-                else if (splitLine[0] == "ServerRoot")
+                else if (splitLine[0].equals("ServerRoot"))
                 {
                     serverRoot = splitLine[0];
                 }

@@ -27,13 +27,11 @@ public class Resource {
         }
         else
         {
-            absolutePath = config.getDocRoot(); + uri;
+            absolutePath = config.getServerRoot() + uri;
         }
         
-        //Resolve path (DOC_ROOT + URI);
-        //Check if file.
-        //If not File, append DirIndex, else absolute path.
         //Check if protected. Check if directory contains Htaccess.
+        //if (new File(absolutePath, )
     }
     public String absolutePath()
     {
