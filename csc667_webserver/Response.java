@@ -21,7 +21,7 @@ public class Response {
         
     }
     
-    public void Send(OutputStream out)
+    public void send(OutputStream out)
     {
         
     }

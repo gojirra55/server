@@ -15,17 +15,20 @@ import java.net.Socket;
 public class Worker extends Thread
 {
     private final Socket client;
-    private MimeTypes mimes;
     private final HttpdConf config;
+    private MimeTypes mimes;
+    private final OutputStream out;
     private final Logger logger;
     private Request request;
     private Resource resource;
+    private ResponseFactory responseFactory = new ResponseFactory();
     private Response response;
     
-    public Worker(Socket socket, HttpdConf config, MimeTypes mimes, Logger logger){
-        this.client = socket;
+    public Worker(Socket socket, HttpdConf config, MimeTypes mimes, OutputStream out, Logger logger){
+        client = socket;
         this.config = config;
-        this.mimes = mimes;
+        this.mimes= mimes;
+        this.out = out;
         this.logger = logger;
     }
     public void run()
@@ -35,12 +38,16 @@ public class Worker extends Thread
             InputStream stream = client.getInputStream();
             try
             {
+                //Create and parse request.
                 request = new Request(stream);
                 request.parse();
+                //Create resource.
                 resource = new Resource(request.getUri(), config);
-                //Create response.
-                //Log response.
-                //Send response.
+                //Create and log response.
+                response = responseFactory.getResponse(request, resource);
+                logger.write(request, response);
+                response.send(out);
+                
             }
             catch(BadRequest e)
             {

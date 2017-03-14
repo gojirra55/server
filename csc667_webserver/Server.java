@@ -19,8 +19,6 @@ public class Server
     private MimeTypes mimeTypes;
     private ServerSocket socket;
     private Dictionary accessFiles;
-    private Request request;
-    private Resource resource;
     public static final int DEFAULT_PORT = 8080;
     
     public void start() throws IOException
@@ -49,10 +47,11 @@ public class Server
                 */
                
                 client = socket.accept();
-                Thread worker = new Thread(new Worker(client, configuration, mimeTypes, logger));
+                OutputStream out = client.getOutputStream();
+                Thread worker = new Thread(new Worker(client, configuration, mimeTypes, out, logger));
                 worker.start();
 
-                PrintWriter out = new PrintWriter(client.getOutputStream(),true); //not sure if this should be handled in Response class
+                
 
                 client.close();
                 
