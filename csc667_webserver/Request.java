@@ -15,16 +15,14 @@ import java.util.*;
 public class Request
 {
     private String uri;
-    private String body; //UML Diagram shows type "?"... ?
     private String verb;
     private String httpVersion;
     private Map<String, String> headers;
     private String[] headerLine;
     private String[] requestLine;
     private String messageBody;
-    private ResponseFactory responseFactory = new ResponseFactory();
-    private Response response;
     private BufferedReader bufferedReader;
+    
     public Request(String test)
     {
         
@@ -38,12 +36,12 @@ public class Request
     
     public void parse() throws BadRequest, IOException
     {
-        getRequestLine();
-        getHeaders();
-        getBody();
+        generateRequestLine();
+        generateHeaders();
+        generateBody();
     }
     
-    private void getRequestLine() throws BadRequest, IOException
+    private void generateRequestLine() throws BadRequest, IOException
     {
         String line = getStringCheckNull();
         //Request Line: Method Request-URI HTTP-Version CRLF.
@@ -53,18 +51,18 @@ public class Request
         httpVersion = requestLine[2];
     }
     
-    private void getHeaders() throws BadRequest, IOException
+    private void generateHeaders() throws BadRequest, IOException
     {
         //An empty line seperates headers from body. Read lines until empty line is found.
         String line;
-        while((line = getStringCheckNull()) != "")
+        while(!(line = getStringCheckNull()).equals(""))
         {
             headerLine = line.split(":", 2);
             headers.put(headerLine[0], headerLine[1]);
         }
     }
     
-    private void getBody() throws IOException
+    private void generateBody() throws IOException
     {
         //Is it possible to get the body this way without using content-length header? What is content-length needed for?
         messageBody = "";
@@ -100,5 +98,10 @@ public class Request
     public String getHttpVersion()
     {
         return httpVersion;
+    }
+    
+    public String getBody()
+    {
+        return messageBody;
     }
 }
