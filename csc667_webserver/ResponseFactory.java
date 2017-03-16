@@ -12,7 +12,24 @@ package csc667_webserver;
 public class ResponseFactory {
     public Response getResponse(Request request, Resource resource){
         Response response = new Response(resource);
-        //What to use resource for? -Jason
+        
+        int code;
+        switch (request.getVerb())
+        {
+            case "PUT":     code = 201;
+                            break;
+            case "DELETE":  code = 201;
+                            break;
+            case "GET":     code = 201;
+                            break;
+            case "POST":    code = 201;
+                            break;
+            case "HEAD":    code = 201;
+                            break;
+            default:        code = 400;
+                            break;
+        }
+        response.setCode(code);
         
         return response;
     }

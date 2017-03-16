@@ -64,9 +64,9 @@ public class Htaccess extends ConfigurationReader {
     public boolean isAuthorized(String username, String password) { //might try isAuthorized(String authInfo
         boolean authCheck = false;
         
-        if (Htpassword.isAuthorized(username,password)) {
+        /*if (Htpassword.isAuthorized(username,password)) {
             
-        }
+        }*/
 
         return authCheck;
     }
