@@ -6,23 +6,35 @@
 package csc667_webserver;
 
 import java.io.OutputStream;
+import java.io.PrintStream;
 
 /**
  *
  * @author Josh and Jason
  */
 public class Response {
-    public int code;
+    private int code;
     public String reasonPhrase;
     public Resource resource;
     
     public Response(Resource resource)
     {
-        
+        this.resource = resource;
     }
     
     public void send(OutputStream out)
     {
-        
+        PrintStream printStream = new PrintStream(out);
+        printStream.print("TESTING: HELLO!!");
+    }
+    
+    public void setCode(int code)
+    {
+        this.code = code;
+    }
+    
+    public int getCode()
+    {
+        return code;
     }
 }

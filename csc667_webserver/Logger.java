@@ -26,7 +26,7 @@ public class Logger {
     {
         String line = "Request: " + request.getUri() + " " + request.getVerb() + " " + request.getHttpVersion() + "\n";
         fileWriter.write(line);
-        line = Integer.toString(response.code);
+        line = Integer.toString(response.getCode());
         fileWriter.write(line);
     }
 }
