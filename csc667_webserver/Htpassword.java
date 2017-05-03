@@ -26,7 +26,6 @@ public class Htpassword extends ConfigurationReader {
     //private HashMap<String, String> users;
 
     public Htpassword(String filename) throws IOException {
-        super(filename);
         System.out.println("Password file: " + filename);
 
         this.passwords = new HashMap<String, String>();

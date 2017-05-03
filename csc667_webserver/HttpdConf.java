@@ -13,19 +13,21 @@ import java.util.*;
  */
 public class HttpdConf extends ConfigurationReader
 {
-    private Map<String, String> aliases; //HashMap<String,String> aliases according to ilearn
-    private Map<String, String> scriptAliases; //HashMap<String,String> scriptAliases according to ilearn
+    private HashMap<String, String> aliases;
+    private HashMap<String, String> scriptAliases;
     private String serverRoot;
     private int portNum;
+    private FileReader fileReader;
     private BufferedReader bufferedReader;
-    private String loggerFile; //Get logger file from config file.
+    private String currentLine;
+    private String loggerFile; //Needed for Logger, get from config file.
     
     public HttpdConf(String fileName) throws IOException
     {
-        super(fileName);
         aliases = new HashMap<String, String>();
         scriptAliases = new HashMap<String, String>();
-        bufferedReader = getBufferedReader();
+        fileReader = new FileReader(fileName);
+        bufferedReader = new BufferedReader(fileReader);
     }
     
     @Override
@@ -33,16 +35,13 @@ public class HttpdConf extends ConfigurationReader
     {
         try
         {
-            //FileReader fileReader = new FileReader(this.getFile());
-            //BufferedReader bufferedReader = new BufferedReader(fileReader);
-            aliases = new HashMap();
-            String line = "";
+            aliases = new HashMap<String, String>();
             String splitLine[];
             
             //Read config file.
             while (hasMoreLines())
             {
-                splitLine = line.split(" ", 2);
+                splitLine = currentLine.split(" ", 2);
                 if (splitLine[0].equals("Listen")){
                     portNum = Integer.parseInt(splitLine[1]);
                 }
@@ -65,6 +64,25 @@ public class HttpdConf extends ConfigurationReader
         {
             System.err.println("Caught IOException: " + e.getMessage());
         }
+    }
+    
+    @Override
+    public Boolean hasMoreLines() throws IOException
+    {
+        Boolean result = true;
+        
+        if (nextLine() != null)
+        {
+            result = false;
+        }
+        
+        return result;
+    }
+    
+    @Override
+    public String nextLine() throws IOException
+    {
+        return (currentLine = bufferedReader.readLine());
     }
     
     public String getServerRoot()
