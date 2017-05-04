@@ -17,7 +17,7 @@ import java.io.IOException;
 
 /**
  *
- * @author Josh and Jason
+ * @author Jason
  */
 
 public class Htpassword extends ConfigurationReader {
@@ -39,7 +39,8 @@ public class Htpassword extends ConfigurationReader {
             passwords.put(tokens[0], tokens[1].replace("{SHA}", "").trim());
         }
     }
-    public void load() throws FileNotFoundException{
+    public void load() {
+        /*
         try{
             FileReader fileReader = new FileReader(this.getFile());
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -97,6 +98,18 @@ public class Htpassword extends ConfigurationReader {
         } catch (Exception e) {
             System.err.println("Caught IOException: " + e.getMessage());
         }
+        return "";
+
+        */
+    }
+    
+    @Override
+    public Boolean hasMoreLines() {
+        return false;
+    }
+    
+    @Override
+    public String nextLine() {
         return "";
     }
 }

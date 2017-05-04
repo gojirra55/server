@@ -9,7 +9,7 @@ import java.io.*;
 
 /**
  *
- * @author Josh and Jason
+ * @author Jason
  */
 public class Logger {
     private File file;

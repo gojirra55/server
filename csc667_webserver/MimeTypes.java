@@ -12,7 +12,7 @@ import java.util.Hashtable;
 import java.util.Dictionary;
 /**
  *
- * @author Josh and Jason
+ * @author Jason
  */
 public class MimeTypes extends ConfigurationReader
 {
@@ -21,14 +21,14 @@ public class MimeTypes extends ConfigurationReader
     
     public MimeTypes(String fileNames) throws IOException
     {
-    	super(fileNames);
         this.types = new Hashtable(); //HashMap<>();
         //this.bufferedReader = new BufferedReader(new FileReader(this.getFile()));
         this.load();
     }
 
-    public void load() throws IOException
-    {        
+    public void load()
+    {    
+        /*
         FileReader fileReader = new FileReader(this.getFile());
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         types = new Hashtable<String, String>();
@@ -40,11 +40,22 @@ public class MimeTypes extends ConfigurationReader
             splitLine = line.split("",2);
             types.put(splitLine[0], splitLine[1]);
         }
+        */
     }
 
     public String lookup(String extension)
     {
         //return types.get(extension); not 100% sure on this statement
+        return "";
+    }
+    
+    @Override
+    public Boolean hasMoreLines() {
+        return false;
+    }
+    
+    @Override
+    public String nextLine() {
         return "";
     }
 }

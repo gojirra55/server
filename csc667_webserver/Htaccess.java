@@ -12,9 +12,10 @@ import java.io.IOException;
 
 /**
  *
- * @author Josh and Jason
+ * @author Jason
  */
-public class Htaccess extends ConfigurationReader {
+public class Htaccess extends ConfigurationReader
+{
 
     private Htpassword userFile;
     private String authType;
@@ -23,7 +24,6 @@ public class Htaccess extends ConfigurationReader {
     private BufferedReader bufferedReader;
 
     public Htaccess(String fileName) throws IOException {
-        super(fileName);
         this.userFile = new Htpassword(fileName);
         this.authName = new String();
         this.authType = new String();
@@ -31,9 +31,11 @@ public class Htaccess extends ConfigurationReader {
         //this.bufferedReader = new BufferedReader(new FileReader(getFile()));
     }
 
-    public void load() throws IOException {
+    @Override
+    public void load() {
         //read in _.htaccess file
         //read each line and store it to authType,authName,require respectively
+        /*
         try {
             FileReader fileReader = new FileReader(this.getFile());
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -64,10 +66,21 @@ public class Htaccess extends ConfigurationReader {
     public boolean isAuthorized(String username, String password) { //might try isAuthorized(String authInfo
         boolean authCheck = false;
         
-        /*if (Htpassword.isAuthorized(username,password)) {
+        if (Htpassword.isAuthorized(username,password)) {
             
-        }*/
+        }
 
         return authCheck;
+        */
+    }
+    
+    @Override
+    public Boolean hasMoreLines() {
+        return false;
+    }
+    
+    @Override
+    public String nextLine() {
+        return "";
     }
 }

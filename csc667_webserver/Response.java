@@ -10,7 +10,7 @@ import java.io.PrintStream;
 
 /**
  *
- * @author Josh and Jason
+ * @author Jason
  */
 public class Response {
     private int code;

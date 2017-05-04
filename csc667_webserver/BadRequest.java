@@ -7,7 +7,7 @@ package csc667_webserver;
 
 /**
  *
- * @author Josh and Jason
+ * @author Jason
  */
 public class BadRequest extends Exception
 {

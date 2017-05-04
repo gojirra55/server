@@ -7,23 +7,28 @@ package csc667_webserver;
 
 import java.io.*;
 import java.util.*;
+
 /**
  *
- * @author Josh and Jason
+ * @author Jason
  */
 public class HttpdConf extends ConfigurationReader
 {
+    private boolean DEBUG = false;
+    
     private HashMap<String, String> aliases;
     private HashMap<String, String> scriptAliases;
+    private String documentRoot;
     private String serverRoot;
     private int portNum;
+    private String logFile;
     private FileReader fileReader;
     private BufferedReader bufferedReader;
     private String currentLine;
-    private String loggerFile; //Needed for Logger, get from config file.
     
     public HttpdConf(String fileName) throws IOException
     {
+        if(DEBUG) System.out.println("File name: " + fileName);
         aliases = new HashMap<String, String>();
         scriptAliases = new HashMap<String, String>();
         fileReader = new FileReader(fileName);
@@ -31,26 +36,39 @@ public class HttpdConf extends ConfigurationReader
     }
     
     @Override
-    public void load()
-    {
-        try
-        {
-            aliases = new HashMap<String, String>();
-            String splitLine[];
-            
+    public void load() {
+        try {
             //Read config file.
-            while (hasMoreLines())
-            {
+            String splitLine[];
+            while (hasMoreLines()) {
                 splitLine = currentLine.split(" ", 2);
-                if (splitLine[0].equals("Listen")){
-                    portNum = Integer.parseInt(splitLine[1]);
-                }
-                else if (splitLine[0].equals("ServerRoot"))
+                if(DEBUG) System.out.println("Reading config file: " + splitLine[0] + splitLine[1]);
+                switch(splitLine[0])
                 {
-                    serverRoot = splitLine[0];
-                }
-                else{
-                    aliases.put(splitLine[0], splitLine[1]);
+                    case "ServerRoot":
+                                serverRoot = splitLine[1];
+                                break;
+                    case "DocumentRoot":
+                                documentRoot = splitLine[1];
+                                break;
+                    case "Listen":
+                                portNum = Integer.parseInt(splitLine[1]);
+                                break;
+                    case "LogFile":
+                                logFile = splitLine[1];
+                                break;
+                    default:    //Aliases are in the format of Alias <name> <path>.
+                                //So the line needs to be split again.
+                                String secondSplit[];
+                                secondSplit = splitLine[1].split(" ", 2);
+                                if (secondSplit.length == 2) {
+                                    aliases.put(secondSplit[0], secondSplit[1]);
+                                }
+                                else {
+                                    System.out.println(currentLine + " is not a valid config entry.");
+                                }
+                                break;
+                                
                 }
             }
             
@@ -69,19 +87,19 @@ public class HttpdConf extends ConfigurationReader
     @Override
     public Boolean hasMoreLines() throws IOException
     {
-        Boolean result = true;
+        Boolean result = false;
         
-        if (nextLine() != null)
-        {
-            result = false;
+        if (nextLine() != null) {
+            if(DEBUG) System.out.println("Current line: " + currentLine);
+            result = true;
         }
         
+        if(DEBUG) System.out.println("Has more lines?: " + result);
         return result;
     }
     
     @Override
-    public String nextLine() throws IOException
-    {
+    public String nextLine() throws IOException {
         return (currentLine = bufferedReader.readLine());
     }
     
@@ -97,7 +115,8 @@ public class HttpdConf extends ConfigurationReader
     
     public String getLoggerFile()
     {
-        return loggerFile;
+        if(DEBUG) { System.out.println("Logger file is: " + logFile); }
+        return logFile;
     }
     
     public String checkAliases(String uri)
