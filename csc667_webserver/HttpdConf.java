@@ -46,23 +46,23 @@ public class HttpdConf extends ConfigurationReader
                 switch(splitLine[0])
                 {
                     case "ServerRoot":
-                                serverRoot = splitLine[1];
+                                serverRoot = stripQuotes(splitLine[1]); 
                                 break;
                     case "DocumentRoot":
-                                documentRoot = splitLine[1];
+                                documentRoot = stripQuotes(splitLine[1]); 
                                 break;
                     case "Listen":
                                 portNum = Integer.parseInt(splitLine[1]);
                                 break;
                     case "LogFile":
-                                logFile = splitLine[1];
+                                logFile = stripQuotes(splitLine[1]);
                                 break;
                     default:    //Aliases are in the format of Alias <name> <path>.
                                 //So the line needs to be split again.
                                 String secondSplit[];
                                 secondSplit = splitLine[1].split(" ", 2);
                                 if (secondSplit.length == 2) {
-                                    aliases.put(secondSplit[0], secondSplit[1]);
+                                    aliases.put(secondSplit[0], stripQuotes(secondSplit[1]));
                                 }
                                 else {
                                     System.out.println(currentLine + " is not a valid config entry.");
@@ -127,5 +127,9 @@ public class HttpdConf extends ConfigurationReader
     public String checkScriptAliases(String uri)
     {
         return scriptAliases.get(uri);
+    }
+    
+    public String stripQuotes(String string) {
+        return string.replace("\"", "");
     }
 }

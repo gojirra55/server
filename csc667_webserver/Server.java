@@ -44,10 +44,8 @@ public class Server
                 OutputStream out = client.getOutputStream();
                 Thread worker = new Thread(new Worker(client, configuration, mimeTypes, out, logger));
                 worker.start();
-
                 
-
-                client.close();
+                //client.close();
             }
         }
         catch (IOException e)
