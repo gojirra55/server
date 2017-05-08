@@ -11,7 +11,7 @@ import java.util.Dictionary;
 
 /**
  *
- * @author Josh and Jason
+ * @author Jason
  */
 public class Server
 {
@@ -19,6 +19,7 @@ public class Server
     private MimeTypes mimeTypes;
     private ServerSocket socket;
     private Dictionary accessFiles;
+    private String configurationDirectory = "./build/classes/conf/";
     public static final int DEFAULT_PORT = 8080;
     
     public void start() throws IOException
@@ -26,11 +27,11 @@ public class Server
         try
         {
             //Load config file.
-            configuration = new HttpdConf("./conf/httpd.conf");
+            configuration = new HttpdConf(configurationDirectory + "httpd.conf");
             configuration.load();
             int port = configuration.getPort(); //Need to add lookup function to HttpdConf.
             //Load mime types.
-            mimeTypes = new MimeTypes("./conf/mime.conf");
+            mimeTypes = new MimeTypes(configurationDirectory + "mime.types");
             //Set up logger.
             Logger logger = new Logger(configuration.getLoggerFile());
             //Set up socket.
@@ -39,22 +40,12 @@ public class Server
             
             while (true)
             {
-                /* ---Pulled from Java docs---
-                * If the server successfully binds to its port, then the ServerSocket object is successfully created and 
-                * the server continues to the next step—accepting a connection from a client (the next statement in the try-with-resources statement):
-                *    clientSocket = serverSocket.accept();
-                * The accept method waits until a client starts up and requests a connection on the host and port of this server. 
-                */
-               
                 client = socket.accept();
                 OutputStream out = client.getOutputStream();
                 Thread worker = new Thread(new Worker(client, configuration, mimeTypes, out, logger));
                 worker.start();
-
                 
-
-                client.close();
-                
+                //client.close();
             }
         }
         catch (IOException e)

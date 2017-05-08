@@ -10,7 +10,7 @@ import java.util.*;
 
 /**
  *
- * @author Josh and Jason
+ * @author Jason
  */
 public class Request
 {

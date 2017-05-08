@@ -10,7 +10,7 @@ import java.net.Socket;
 
 /**
  *
- * @author Josh and Jason
+ * @author Jason
  */
 public class Worker extends Thread
 {
