@@ -31,7 +31,7 @@ public class Logger {
             }
         }
         catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Caught IOException: " + e.getMessage());
         }
     }
     

@@ -14,6 +14,7 @@ import java.util.*;
  */
 public class Request
 {
+    Boolean DEBUG = true;
     private String uri;
     private String verb;
     private String httpVersion;
@@ -23,11 +24,6 @@ public class Request
     private String messageBody;
     private BufferedReader bufferedReader;
     
-    public Request(String test)
-    {
-        
-    }
-    
     public Request(InputStream client) throws BadRequest, IOException
     {
         bufferedReader = new BufferedReader(new InputStreamReader(client));
@@ -36,6 +32,7 @@ public class Request
     
     public void parse() throws BadRequest, IOException
     {
+        if (DEBUG) System.out.println("TEST!");
         generateRequestLine();
         generateHeaders();
         generateBody();
@@ -49,6 +46,7 @@ public class Request
         verb = requestLine[0];
         uri = requestLine[1];
         httpVersion = requestLine[2];
+        if (DEBUG) System.out.println("Request: " + verb + ", " + uri + ", " + httpVersion);
     }
     
     private void generateHeaders() throws BadRequest, IOException
@@ -87,6 +85,7 @@ public class Request
     //Accessors
     public String getUri()
     {
+        if (DEBUG) System.out.println("URI is: " + uri);
         return uri;
     }
     

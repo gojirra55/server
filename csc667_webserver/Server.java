@@ -20,7 +20,6 @@ public class Server
     private ServerSocket socket;
     private Dictionary accessFiles;
     private String configurationDirectory = "./build/classes/conf/";
-    public static final int DEFAULT_PORT = 8080;
     
     public void start() throws IOException
     {
@@ -36,16 +35,14 @@ public class Server
             Logger logger = new Logger(configuration.getLoggerFile());
             //Set up socket.
             socket = new ServerSocket(port);
-            Socket client = null;
             
             while (true)
             {
-                client = socket.accept();
-                OutputStream out = client.getOutputStream();
-                Thread worker = new Thread(new Worker(client, configuration, mimeTypes, out, logger));
+                Socket connection = socket.accept();
+                OutputStream outputStream = connection.getOutputStream();
+                InputStream inputStream = connection.getInputStream();
+                Thread worker = new Thread(new Worker(connection, configuration, mimeTypes, outputStream, inputStream, logger));
                 worker.start();
-                
-                //client.close();
             }
         }
         catch (IOException e)

@@ -14,45 +14,50 @@ import java.net.Socket;
  */
 public class Worker extends Thread
 {
-    private final Socket client;
+    private final Socket connection;
     private final HttpdConf config;
     private MimeTypes mimes;
-    private final OutputStream out;
+    private final OutputStream outputStream;
+    private final InputStream inputStream;
     private final Logger logger;
     private Request request;
     private Resource resource;
     private ResponseFactory responseFactory = new ResponseFactory();
     private Response response;
     
-    public Worker(Socket socket, HttpdConf config, MimeTypes mimes, OutputStream out, Logger logger){
-        client = socket;
+    public Worker(Socket connection, HttpdConf config, MimeTypes mimes, OutputStream outputStream, InputStream inputStream, Logger logger){
+        this.connection = connection;
         this.config = config;
         this.mimes= mimes;
-        this.out = out;
+        this.outputStream = outputStream;
+        this.inputStream = inputStream;
         this.logger = logger;
     }
     public void run()
     {
         try
         {
-            InputStream stream = client.getInputStream();
             try
             {
                 //Create and parse request.
-                request = new Request(stream);
+                request = new Request(inputStream);
                 request.parse();
                 //Create resource.
                 resource = new Resource(request.getUri(), config);
                 //Create and log response.
                 response = responseFactory.getResponse(request, resource);
+                System.out.println("Request: " + request + ". Response: " + response.getCode());
                 logger.write(request, response);
-                response.send(out);
+                response.send(outputStream);
                 
             }
             catch(BadRequest e)
             {
                 System.err.println("Caught BadRequest exception: " + e.getMessage());
                 logger.write(request, response);
+            }
+            finally {
+                connection.close();
             }
         }
         catch(IOException e)
