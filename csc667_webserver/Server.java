@@ -18,6 +18,7 @@ public class Server
     private HttpdConf configuration;
     private MimeTypes mimeTypes;
     private ServerSocket socket;
+    private Socket clientSocket;
     private Dictionary accessFiles;
     private String configurationDirectory = "./build/classes/conf/";
     
@@ -36,14 +37,45 @@ public class Server
             //Set up socket.
             socket = new ServerSocket(port);
             
+            clientSocket = socket.accept();
+            OutputStream outputStream = clientSocket.getOutputStream();
+            PrintWriter printWriter = new PrintWriter(outputStream, true);
+            
+            InputStream inputStream = clientSocket.getInputStream();
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            
+            String inputLine, outputLine;
+            
+            while((inputLine = bufferedReader.readLine()) != null) {
+                System.out.println("Input line: " + inputLine);
+                if (inputLine.isEmpty()) {
+                    System.out.println("Breaking.");
+                    break;
+                }
+            }
+            
+            Thread worker = new Thread(new Worker(clientSocket, configuration, mimeTypes, outputStream, inputStream, logger));
+            worker.start();
+            
+            while((inputLine = bufferedReader.readLine()) != null) {
+                System.out.println("Input line: " + inputLine);
+                if (inputLine.isEmpty()) {
+                    System.out.println("Breaking.");
+                    break;
+                }
+            }
+            
+            
+            /*
             while (true)
             {
-                Socket connection = socket.accept();
+                clientSocket = socket.accept();
                 OutputStream outputStream = connection.getOutputStream();
                 InputStream inputStream = connection.getInputStream();
-                Thread worker = new Thread(new Worker(connection, configuration, mimeTypes, outputStream, inputStream, logger));
+                Thread worker = new Thread(new Worker(clientSocket, configuration, mimeTypes, outputStream, inputStream, logger));
                 worker.start();
-            }
+            }*/
         }
         catch (IOException e)
         {

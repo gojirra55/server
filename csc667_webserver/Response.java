@@ -37,23 +37,20 @@ public class Response {
         String dateString = dateFormat.format(date);
         if (DEBUG) System.out.println("The date is: " + dateString);
         
-        String header = "HTTP/1.0 200 OK\r\n";
+        String header = "HTTP/1.1 200 OK\r\n";
         String dateLine = "Date: " + dateString + "\r\n";
         //String server = "Server: Jason's Server\r\n";
         String contentType = "Content-Type: text/html\r\n";
         String body = "<html><body><h1>TEST</h1></body></html>\r\n";
-        //String contentLength = "Content-Length:" + body.getBytes().length + "\r\n";
+        String contentLength = "Content-Length:" + body.getBytes().length + "\r\n";
         
-        response = header + dateLine + /*server + /*contentLength +*/ contentType + "\r\n" + body;
+        response = header + dateLine + /*server +*/ contentLength + contentType + "\r\n" + body;
         if (DEBUG) System.out.print("Ressponse:\n" + response);
         
         try {
-            outputStream.write("Hello!".getBytes());
-            
-            /*
-            dataOutputStream.writeBytes(response);
+            dataOutputStream.write(response.getBytes());
             dataOutputStream.close();
-            outputStream.close();*/
+            outputStream.close();
         }
         catch (IOException e) {
             System.err.println("Caught IOException: " + e.getMessage());

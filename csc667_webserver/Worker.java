@@ -56,9 +56,6 @@ public class Worker extends Thread
                 System.err.println("Caught BadRequest exception: " + e.getMessage());
                 logger.write(request, response);
             }
-            finally {
-                connection.close();
-            }
         }
         catch(IOException e)
         {
